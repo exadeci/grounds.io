@@ -9,31 +9,33 @@
 
 <% end %>
 
-<div class="row">
+<div class="editor">
 
-  <div class="editor-heading">
+  <div class="editor-header">
 
     <% [:language, :theme, :indent, :keyboard].each do |option| %>
        <%= render 'option_dropdown', option: option %>
     <% end %>
 
-    <%= button_tag(type: 'button', id: :share, class: 'button') do
-      content_tag(:strong, fa_icon('share', text: t('editor.share')))
-    end %>
-
   </div>
 
-  <%= content_tag(:div, @ground.code, id: :ground_editor, class: 'editor-body', data: @ground.data) %>
+  <%= content_tag(:div, @ground.code, id: :ground_editor, class: 'editor-body', data: @ground.editor_data) %>
 
 </div>
 
-<div class="spaced-row">
+<div class="controls-up">
 
   <input name="sharedURL" type="text" id="sharedURL" class="rounded">
 
   <%= button_tag(type: 'button', id: :run, class: 'button') do
     content_tag(:strong, fa_icon('play', text: t('editor.run')))
   end %>
+
+  <%= button_tag(type: 'button', id: :share, class: 'button') do
+    content_tag(:strong, fa_icon('share', text: t('editor.share')))
+  end %>
+
+  <%= render 'shortcuts', of: :editor, with: @ground.shortcuts %>
 
 </div>
 
@@ -45,11 +47,11 @@
 
   <pre id="connect_error" class="stderr" hidden="true"><%= t('editor.error.connect') %></pre>
 
-  <pre id="output"></pre>
+  <pre class="output"></pre>
 
 </div>
 
-<div class="spaced-row">
+<div class="controls-down">
 
   <%= button_tag(type: 'button', id: :back, class: 'button') do
     content_tag(:strong, fa_icon('long-arrow-up', text: t('editor.back')))

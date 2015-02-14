@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Ground do
   it { should validate_presence_of(:language) }
@@ -9,15 +9,18 @@ describe Ground do
 
   describe('.new_or_default') do
     context 'when language is specified' do
+      let(:language) { 'test' }
+      let(:ground)   { Ground.new_or_default(language) }
+
       it 'returns a ground for this language' do
-        ground = Ground.new_or_default('test')
-        expect(ground.language).to eq('test')
+        expect(ground.language).to eq(language)
       end
     end
 
     context 'when language is not specified' do
+      let(:ground) { Ground.new_or_default }
+
       it 'returns a ground with default language' do
-        ground = Ground.new_or_default(nil)
         expect(ground.language).to eq(Editor.default_option_code(:language))
       end
     end

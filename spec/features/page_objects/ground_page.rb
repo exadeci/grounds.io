@@ -7,8 +7,16 @@ class GroundPage < Struct.new(:path)
     page.visit(path)
   end
 
+  def leave
+    page.visit('/about')
+  end
+
+  def run
+    button(:run).click
+  end
+
   def share
-    find('#share').click
+    button(:share).click
   end
 
   def shared_url
@@ -17,6 +25,18 @@ class GroundPage < Struct.new(:path)
 
   def editor
     CodeEditor.new
+  end
+
+  def console
+    Console.new
+  end
+
+  def dropdown(option)
+    Dropdown.new(option)
+  end
+
+  def button(id)
+    Button.new(id, I18n.t("editor.#{id}"))
   end
 
   def show_options(option)
@@ -35,17 +55,8 @@ class GroundPage < Struct.new(:path)
     selected_label(option) == config.default_label(option)
   end
 
-  def has_in_session?(option, code)
-    page.get_rack_session_key(option) == code
-  end
-
-  def set_session(option, code)
-    # '=>': Option should be saved as a string, not a symbol
-    page.set_rack_session(option => code)
-  end
-
-  def dropdown(option)
-    Dropdown.new(option)
+  def connected?
+    evaluate_script('client !== null && client.connected()')
   end
 
   private
