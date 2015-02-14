@@ -12,7 +12,9 @@ class GroundsController < ApplicationController
 
   def share
     @ground = Ground.new(ground_params)
-
+    @gist = Gist.new
+    @gist.create(@ground.code)
+    Rails.logger.debug(@gist)
     if @ground.save
       render json: { shared_url: ground_shared_url(@ground) }
     else
